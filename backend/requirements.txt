@@ -1,0 +1,8 @@
+Django>=3.2
+djangorestframework
+djangorestframework-simplejwt
+cryptography
+pyotp
+Pillow
+gunicorn
+django-cors-headers
