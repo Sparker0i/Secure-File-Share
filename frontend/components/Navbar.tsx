@@ -1,32 +1,71 @@
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { useRouter } from "next/router"
+import { useSelector, useDispatch } from "react-redux"
+import { logout } from "../store/slices/authSlice"
+import type { RootState } from "../store"
+import { FiUpload, FiUser, FiLogOut } from "react-icons/fi"
 
 export default function Navbar() {
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const user = useSelector((state: RootState) => state.auth.user)
+
+  const handleLogout = () => {
+    dispatch(logout())
+    router.push("/login")
+  }
+
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard", icon: FiUpload },
+    { href: "/profile", label: "Profile", icon: FiUser },
+  ]
+
   return (
-    <nav className="bg-blue-600 p-4">
-      <motion.div 
-        className="container mx-auto flex justify-between items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        <Link href="/">
-          <a className="text-white text-xl font-bold">Secure File Share</a>
-        </Link>
-        <div className="space-x-4">
-          <Link href="/dashboard">
-            <a className="text-white">Dashboard</a>
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 100 }}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/">
+            <a className="flex items-center space-x-2">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">
+                SecureShare
+              </span>
+            </a>
           </Link>
-          <Link href="/upload">
-            <a className="text-white">Upload</a>
-          </Link>
-          <Link href="/profile">
-            <a className="text-white">Profile</a>
-          </Link>
-          <Link href="/login">
-            <a className="text-white">Logout</a>
-          </Link>
+
+          {user && (
+            <div className="flex items-center space-x-4">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  <a
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 
+                    ${
+                      router.pathname === item.href
+                        ? "text-blue-600 bg-blue-50"
+                        : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </a>
+                </Link>
+              ))}
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors duration-200"
+              >
+                <FiLogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
-      </motion.div>
-    </nav>
+      </div>
+    </motion.nav>
   )
 }

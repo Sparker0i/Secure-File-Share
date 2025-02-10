@@ -3,6 +3,171 @@
 @tailwind utilities;
 
 /* Custom global styles */
-body {
-  font-family: 'Inter', sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --accent-gradient: linear-gradient(135deg, #ec4899 0%, #d946ef 100%);
+  --surface-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  @apply bg-slate-50;
+  overflow-x: hidden;
+}
+
+/* Modern Glass Effect */
+.glass-morphism {
+  @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg;
+}
+
+.glass-card {
+  @apply bg-white/90 backdrop-blur-xl border border-white/20 shadow-xl rounded-2xl;
+}
+
+/* Sophisticated Button Styles */
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-semibold text-white shadow-lg
+         bg-gradient-to-r from-indigo-500 to-indigo-600
+         hover:from-indigo-600 hover:to-indigo-700
+         transform hover:-translate-y-0.5 transition-all duration-200
+         focus:ring-4 focus:ring-indigo-500/20;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 rounded-xl font-semibold text-slate-700
+         bg-white border border-slate-200 shadow-md
+         hover:bg-slate-50 hover:border-slate-300
+         transform hover:-translate-y-0.5 transition-all duration-200
+         focus:ring-4 focus:ring-slate-500/20;
+}
+
+.btn-accent {
+  @apply px-6 py-3 rounded-xl font-semibold text-white shadow-lg
+         bg-gradient-to-r from-pink-500 to-purple-500
+         hover:from-pink-600 hover:to-purple-600
+         transform hover:-translate-y-0.5 transition-all duration-200
+         focus:ring-4 focus:ring-pink-500/20;
+}
+
+/* Enhanced Input Fields */
+.input-field {
+  @apply w-full px-4 py-3 rounded-xl border border-slate-200
+         focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+         bg-white/50 backdrop-blur-sm
+         transition-all duration-200 outline-none;
+}
+
+/* Modern Card Styles */
+.card {
+  @apply glass-card p-6 hover:shadow-2xl transition-all duration-500
+         hover:bg-white/95 transform hover:-translate-y-1;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors duration-200;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600;
+}
+
+/* File Upload Zone */
+.upload-zone {
+  @apply border-3 border-dashed rounded-2xl p-8 transition-all duration-300
+         backdrop-blur-sm bg-white/50 hover:bg-white/70
+         border-slate-200 hover:border-indigo-400;
+}
+
+/* Navigation Menu */
+.nav-link {
+  @apply relative px-4 py-2 text-slate-600 font-medium
+         hover:text-indigo-600 transition-colors duration-200;
+}
+
+.nav-link::after {
+  content: "";
+  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-500
+         transition-all duration-300;
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+/* Feature Cards */
+.feature-card {
+  @apply glass-card p-8 text-center
+         hover:shadow-2xl transition-all duration-500
+         hover:bg-white/95 transform hover:-translate-y-2;
+}
+
+.feature-icon {
+  @apply w-16 h-16 mx-auto mb-6 p-4 rounded-2xl
+         bg-gradient-to-br from-indigo-500/10 to-purple-500/10
+         text-indigo-600;
+}
+
+/* Loading States */
+.loading-shimmer {
+  @apply animate-pulse bg-slate-200 rounded-xl;
+}
+
+/* File List Item */
+.file-item {
+  @apply flex items-center justify-between p-4 rounded-xl
+         bg-white/80 backdrop-blur-sm border border-slate-100
+         hover:shadow-lg transition-all duration-300
+         hover:bg-white hover:border-indigo-100;
+}
+
+/* Progress Bar */
+.progress-bar {
+  @apply h-2 rounded-full bg-slate-100 overflow-hidden;
+}
+
+.progress-bar-fill {
+  @apply h-full bg-gradient-to-r from-indigo-500 to-purple-500
+         transition-all duration-300;
+}
+
+/* Tooltips */
+.tooltip {
+  @apply absolute invisible opacity-0 py-2 px-3 rounded-lg
+         bg-slate-800 text-white text-sm
+         transform -translate-y-2 transition-all duration-200;
+}
+
+.tooltip-trigger:hover .tooltip {
+  @apply visible opacity-100 -translate-y-4;
+}
+

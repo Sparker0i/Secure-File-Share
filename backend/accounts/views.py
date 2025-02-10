@@ -7,6 +7,7 @@ from .serializers import RegisterSerializer, LoginSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
+from django.db.models import Q
 import pyotp
 from .models import CustomUser
 from .utils import decrypt_password
@@ -205,9 +206,11 @@ class UserSearchView(APIView):
         # Get the search query from the query parameters
         query = request.query_params.get('query', '')
         if query:
-            # Filter by username or email (case-insensitive)
-            users = CustomUser.objects.filter(username__icontains=query) | CustomUser.objects.filter(email__icontains=query)
-            users = users.distinct()[:10]  # Limit results to 10 matches
+            # Filter users by username or email (case-insensitive),
+            # and exclude the currently authenticated user.
+            users = CustomUser.objects.filter(
+                (Q(username__icontains=query) | Q(email__icontains=query))
+            ).exclude(id=request.user.id).distinct()[:10]
             data = [{'id': user.pk, 'username': user.username, 'email': user.email} for user in users]
             return Response(data, status=status.HTTP_200_OK)
         # If no query provided, return an empty list

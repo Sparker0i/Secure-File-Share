@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework import generics
 from datetime import datetime, timedelta
+from django.utils import timezone
 from .models import File, FileShare
 from .serializers import FileSerializer, FileUploadSerializer, FileShareSerializer
 from django.shortcuts import get_object_or_404
@@ -57,15 +58,30 @@ class FileListView(generics.ListAPIView):
 
 class FileDownloadView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, file_id):
         file_instance = get_object_or_404(File, id=file_id)
+        
+        # Check if the current user is the owner or if the file is shared with them.
         if file_instance.owner != request.user:
-            return Response({"detail": "Forbidden."}, status=status.HTTP_403_FORBIDDEN)
+            # Check if there is an active share for the current user.
+            share_exists = file_instance.shares.filter(
+                target_user=request.user,
+                revoked=False
+            ).filter(
+                Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
+            ).exists()
+
+            if not share_exists:
+                return Response({"detail": "Forbidden."}, status=status.HTTP_403_FORBIDDEN)
+        
         file_path = os.path.join('media', file_instance.file.name)
         if not os.path.exists(file_path):
             return Response({"detail": "File not found."}, status=status.HTTP_404_NOT_FOUND)
+        
         with open(file_path, 'rb') as f:
             encrypted_data = f.read()
+        
         decrypted_data = decrypt_file_data(encrypted_data)
         response = Response(decrypted_data, content_type='application/octet-stream')
         response['Content-Disposition'] = f'attachment; filename="{file_instance.filename}"'
@@ -164,3 +180,4 @@ class ShareableLinkAccessView(APIView):
         response = Response(decrypted_data, content_type='application/octet-stream')
         response['Content-Disposition'] = f'attachment; filename="{file_instance.filename}"'
         return response
+
