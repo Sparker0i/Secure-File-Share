@@ -78,8 +78,8 @@ export default function Register() {
         </motion.button>
         <p className="mt-4 text-center">
           Already have an account?{" "}
-          <Link href="/login">
-            <a className="text-blue-600">Login</a>
+          <Link href="/login" className="text-blue-600">
+            Login
           </Link>
         </p>
       </motion.form>

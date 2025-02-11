@@ -13,7 +13,6 @@ services:
       sh -c "python manage.py makemigrations && python manage.py migrate &&
             gunicorn secure_file_share.wsgi:application --bind 0.0.0.0:8000"
 
-
   nginx:
     image: nginx:latest
     ports:

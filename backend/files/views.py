@@ -166,8 +166,15 @@ class RevokeShareView(APIView):
 
 class ShareableLinkAccessView(APIView):
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, link_id):
-        share = get_object_or_404(FileShare, shareable_link=link_id, revoked=False)
+        # Get the share record, ensuring it is not revoked and is not expired
+        share = get_object_or_404(
+            FileShare,
+            shareable_link=link_id,
+            revoked=False,
+            expires_at__gt=timezone.now()
+        )
         file_instance = share.file
         file_path = os.path.join('media', file_instance.file.name)
         if not os.path.exists(file_path):
@@ -175,8 +182,7 @@ class ShareableLinkAccessView(APIView):
         with open(file_path, 'rb') as f:
             encrypted_data = f.read()
         decrypted_data = decrypt_file_data(encrypted_data)
-        share.revoked = True  # Invalidate the link (single‑use)
-        share.save()
+        # Do not require authentication here
         response = Response(decrypted_data, content_type='application/octet-stream')
         response['Content-Disposition'] = f'attachment; filename="{file_instance.filename}"'
         return response

@@ -5,17 +5,17 @@ import { FiLock, FiShare2, FiShield, FiArrowRight } from "react-icons/fi"
 export default function Home() {
   const features = [
     {
-      icon: <FiLock />,
+      icon: <FiLock size={32} />,
       title: "End-to-End Encryption",
       description: "Military-grade encryption ensures your files remain private and secure.",
     },
     {
-      icon: <FiShare2 />,
+      icon: <FiShare2 size={32}/>,
       title: "Smart Sharing",
       description: "Share files securely with customizable access controls and expiration.",
     },
     {
-      icon: <FiShield />,
+      icon: <FiShield size={32}/>,
       title: "Advanced Security",
       description: "Multi-factor authentication and real-time activity monitoring.",
     },
@@ -52,14 +52,12 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                <Link href="/login">
-                  <a className="btn-primary group">
-                    Get Started
-                    <FiArrowRight className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform" />
-                  </a>
+                <Link href="/login" className="btn-primary group">
+                  Get Started
+                  <FiArrowRight className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/register">
-                  <a className="btn-secondary">Create Free Account</a>
+                <Link href="/register" className="btn-secondary">
+                  Create Free Account
                 </Link>
               </div>
             </motion.div>
@@ -104,14 +102,14 @@ export default function Home() {
             transition={{ delay: 1 }}
             className="py-20 text-center"
           >
-            <div className="glass-card max-w-3xl mx-auto">
+            <div className="feature-card glass-card max-w-3xl mx-auto">
               <h2 className="text-2xl font-bold mb-6 gradient-text">Trusted by Industry Leaders</h2>
               <p className="text-slate-600 mb-8">
                 Join thousands of companies who trust SecureShare with their sensitive data. Enterprise-grade security
                 meets unmatched simplicity.
               </p>
-              <Link href="/register">
-                <a className="btn-accent">Start Secure File Sharing</a>
+              <Link href="/register" className="btn-accent">
+                Start Secure File Sharing
               </Link>
             </div>
           </motion.div>

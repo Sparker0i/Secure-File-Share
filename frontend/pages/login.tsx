@@ -74,8 +74,8 @@ export default function Login() {
         </motion.button>
         <p className="mt-4 text-center">
           Don't have an account?{" "}
-          <Link href="/register">
-            <a className="text-blue-600">Register</a>
+          <Link href="/register" className="text-blue-600">
+            Register
           </Link>
         </p>
       </motion.form>

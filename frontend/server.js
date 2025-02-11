@@ -1,6 +1,7 @@
 // frontend/server.js
 import { createRequire } from "module"
 const require = createRequire(import.meta.url)
+require('dotenv').config()
 
 const { createServer } = require("https")
 const { parse } = require("url")
